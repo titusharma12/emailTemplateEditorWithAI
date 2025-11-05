@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import SignupButton from "./SignupButton";
 
 const HeroSection = () => {
   return (
@@ -20,11 +21,7 @@ const HeroSection = () => {
         >
           Try Demo
         </Button>
-        <Button 
-          className="bg-[#7f57f1] text-white hover:opacity-90 transition-opacity px-6 py-5 text-base"
-        >
-          Get Started Free
-        </Button>
+        <SignupButton/>
       </div>
       <Image
         src={`/landing.webp`}

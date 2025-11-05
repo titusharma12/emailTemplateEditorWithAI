@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from '../ui/button'
+import SignupButton from './SignupButton'
 
 const Header = () => {
   return (
@@ -106,13 +107,14 @@ const Header = () => {
           <line x1="320" y1="280" x2="320" y2="260" stroke="#7f57f1" strokeWidth="2" opacity="0.6"/>
         </svg>
       </div>
-      <Button 
+      {/* <Button 
         variant={'outline'} 
         size={'lg'} 
         className='bg-[#7f57f1] hover:bg-[#6d47e0] text-white border-none rounded-md transition-colors'
       >
         Get Started
-      </Button>
+      </Button> */}
+      <SignupButton/>
     </div>
   )
 }
