@@ -1,9 +1,14 @@
+'use client'
 import React from 'react'
 import { Button } from '../ui/button'
 import Image from 'next/image'
 import { Code, Monitor, Smartphone } from 'lucide-react'
+import { useDeviceStore } from '@/store/Hook'
 
 const EditorHeader = () => {
+const { device, setDevice } = useDeviceStore();
+
+console.log("Current device in EditorHeader:", device);
   return (
     <div className='p-4 shadow-sm flex items-center justify-between'>
         <div className='w-[50px]'>
@@ -110,8 +115,10 @@ const EditorHeader = () => {
         </svg>
         </div>
         <div className='flex gap-3'>
-            <Button variant={'ghost'} className='hover:text-[#7f57f1] cursor-pointer hover:bg-[#6d47e0]/10'><Monitor/>Desktop</Button>
-            <Button variant={'ghost'} className='hover:text-[#7f57f1] cursor-pointer hover:bg-[#6d47e0]/10'><Smartphone/>Mobile</Button>
+            <Button variant={'ghost'} className={`hover:text-[#7f57f1] cursor-pointer ${device==='desktop'&&'bg-[#6d47e0]/10 text-[#7f57f1]'} hover:bg-[#6d47e0]/10`} onClick={()=>{setDevice('desktop')}}><Monitor/>Desktop</Button>
+            <Button variant={'ghost'} className={`hover:text-[#7f57f1] cursor-pointer ${device==='mobile'&&'bg-[#6d47e0]/10 text-[#7f57f1]'} hover:bg-[#6d47e0]/10`} onClick={()=>{
+              setDevice('mobile')
+            }}><Smartphone/>Mobile</Button>
         </div>
         <div className='flex gap-3'>
             <Button variant={'ghost'} className='hover:text-[#7f57f1] cursor-pointer hover:bg-[#6d47e0]/10'><Code/></Button>
