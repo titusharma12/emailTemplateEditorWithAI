@@ -16,6 +16,14 @@ const ElementSidebar = () => {
       id:Date.now()}
     })
   }
+  const onDragElementStart = (element:any)=>{
+   
+    setDragElementLayout({
+      dragElement:{
+      ...element,
+      id:Date.now()}
+    })
+  }
   return (
     <div className='p-4 h-screen shadow-sm'>
       <h2 className='text-lg font-bold'>Layouts</h2>
@@ -32,8 +40,10 @@ const ElementSidebar = () => {
       <h2 className='text-lg font-bold mt-6'>Element</h2>
       <div className='grid grid-cols-1 mt-3 md:grid-cols-2 gap-5'>
         {
-          ElementList.map((item,index)=>(
-           <ElementCardLayout layout={item} key={index} />
+          ElementList.map((element,index)=>(
+              <div key={index} draggable onDragStart={()=>{onDragElementStart(element)}}>
+           <ElementCardLayout layout={element} key={index} />
+           </div>
           ))
         }
       </div>
