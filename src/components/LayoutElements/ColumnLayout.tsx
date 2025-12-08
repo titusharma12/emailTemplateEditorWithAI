@@ -1,6 +1,9 @@
 "use client";
 import { useDragStore, useEmailTemplateStore } from "@/store/Hook";
 import React, { useState } from "react";
+import ButtonComponent from "../customComponents/ElementComponent/ButtonComponent";
+import TextComponent from "../customComponents/ElementComponent/TextComponent";
+import ImageComponent from "../customComponents/ElementComponent/ImageComponent";
 
 export const ColumnLayout = ({ layout }: any) => {
   const [dragOver, setDragOver] = useState<any>();
@@ -34,8 +37,17 @@ export const ColumnLayout = ({ layout }: any) => {
   };
 
   const GetElementComponent = (element: any) => {
+    switch (element?.type) {
+      case "Button":
+        return <ButtonComponent  {...element}/>
+      case "Text":
+        return <TextComponent  {...element}/>
+      case "Image":
+        return <ImageComponent  {...element}/>  
+
+    }
    
-    return element?.type
+    return element?.type;
   }
   
   return (
@@ -53,7 +65,7 @@ export const ColumnLayout = ({ layout }: any) => {
               key={index}
               className={`${
                 index == dragOver?.index && dragOver?.columnId && "bg-green-100"
-              } p-2 flex items-center justify-center border border-dashed bg-gray-100`}
+              } ${!layout?.[index]?.type && 'border border-dashed bg-gray-100'} p-2 flex items-center justify-center `}
               onDragOver={(e) => onDragOverHandle(e, index)}
               onDrop={onDropHandle}
             >

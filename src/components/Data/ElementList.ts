@@ -33,9 +33,9 @@ export default [
         icon: TextSelectionIcon,
         type: 'Text',
         label: 'Text',
-        textarea: 'Sample Text',
+        content: 'Sample Text',
         style: {
-            backgroundColor: '#fff',
+            // backgroundColor: '#fff',
             color: '#000000',
             padding: '10px',
             textAlign: 'center',
