@@ -1,10 +1,15 @@
 "use client";
+import { useDragStore, useEmailTemplateStore } from "@/store/Hook";
 import React, { useState } from "react";
 
 export const ColumnLayout = ({ layout }: any) => {
   const [dragOver, setDragOver] = useState<any>();
+   const {emailTemplate, setEmailTemplate}=useEmailTemplateStore()
+    const {DragElementLayout, setDragElementLayout}=useDragStore()
+
+   
   const onDragOverHandle = (e: any, index: number) => {
-    console.log(layout, "layout in col");
+    
     e.preventDefault();
     console.log("...col over");
     setDragOver({
@@ -13,7 +18,26 @@ export const ColumnLayout = ({ layout }: any) => {
     });
   };
 
-  const onDropHandle = () => {};
+ 
+
+  const onDropHandle = () => {
+    const index = dragOver?.index;
+    setEmailTemplate((prevItem:any)=>
+      prevItem?.map((col:any)=>col?.dragLayout?.id === layout?.dragLayout?.id ? {
+
+  
+        ...col,
+        [index]: DragElementLayout?.dragLayout?.dragElement
+      }:col) 
+    )
+    setDragOver(null);
+  };
+
+  const GetElementComponent = (element: any) => {
+   
+    return element?.type
+  }
+  
   return (
     <div className="">
       <div
@@ -33,7 +57,7 @@ export const ColumnLayout = ({ layout }: any) => {
               onDragOver={(e) => onDragOverHandle(e, index)}
               onDrop={onDropHandle}
             >
-              {index + 1}
+             { GetElementComponent(layout[index])??'drag element here'}
             </div>
           )
         )}
