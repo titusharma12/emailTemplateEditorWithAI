@@ -1,10 +1,11 @@
 'use client'
 import { useDeviceStore, useDragStore, useEmailTemplateStore } from '@/store/Hook';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ColumnLayout } from '../LayoutElements/ColumnLayout';
 
 const Canvas = () => {
   const { device, setDevice } = useDeviceStore();
+   const [userInfo, setUserInfo] = useState<any>(null);
   const {DragElementLayout, setDragElementLayout}=useDragStore()
   const {emailTemplate, setEmailTemplate}=useEmailTemplateStore()
   const [dragOver , setDragOver]=useState(false);
@@ -26,6 +27,8 @@ const Canvas = () => {
     return <ColumnLayout layout={layout}/>
    }
   }
+
+
   return (
     <div className='mt-20 flex justify-center'>
         <div className={`w-full  p-6  ${dragOver ? 'bg-purple-100 p-4': 'bg-white'}  ${device==='desktop'?'max-w-2xl':'max-w-md'}`}

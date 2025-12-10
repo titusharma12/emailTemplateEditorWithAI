@@ -75,7 +75,7 @@ export default [
         icon: Frame,
         type: 'Logo',
         label: 'Logo',
-        imageUrl: "/logo.svg",
+        imageUrl: "/logo.png",
         alt: 'logo',
         url: '#',
         style: {
@@ -96,7 +96,7 @@ export default [
         icon: PanelTop,
         type: 'LogoHeader',
         label: 'Logo Header',
-        imageUrl: "/logo.svg",
+        imageUrl: "/logo.png",
         alt: 'logo',
         url: '#',
         style: {
@@ -107,7 +107,7 @@ export default [
         },
         outerStyle: {
             display: 'flex',
-            justifyContent: 'left',
+            justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#fff',
             width: '100%'

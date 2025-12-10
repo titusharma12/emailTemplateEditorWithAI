@@ -4,6 +4,10 @@ import React, { useState } from "react";
 import ButtonComponent from "../customComponents/ElementComponent/ButtonComponent";
 import TextComponent from "../customComponents/ElementComponent/TextComponent";
 import ImageComponent from "../customComponents/ElementComponent/ImageComponent";
+import LogoComponent from "../customComponents/ElementComponent/LogoComponent";
+import DividerComponent from "../customComponents/ElementComponent/DividerComponent";
+import LogoHeaderComponent from "../customComponents/ElementComponent/LogoHeaderComponent";
+import SocialComponent from "../customComponents/ElementComponent/SocialComponent";
 
 export const ColumnLayout = ({ layout }: any) => {
   const [dragOver, setDragOver] = useState<any>();
@@ -43,7 +47,15 @@ export const ColumnLayout = ({ layout }: any) => {
       case "Text":
         return <TextComponent  {...element}/>
       case "Image":
-        return <ImageComponent  {...element}/>  
+        return <ImageComponent  {...element}/> 
+      case 'Logo':
+        return <LogoComponent  {...element}/> 
+      case 'Divider':
+        return <DividerComponent  {...element}/> 
+      case 'LogoHeader':
+        return <LogoHeaderComponent  {...element}/>
+      case 'SocialIcons':
+        return <SocialComponent  {...element}/>       
 
     }
    
