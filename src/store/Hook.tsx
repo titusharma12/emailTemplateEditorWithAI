@@ -28,3 +28,9 @@ export const useEmailTemplateStore = create<any>((set) => ({
       emailTemplate: updateFn(state.emailTemplate),
     })),
 }));
+
+
+export const useSelectedElementStore = create<any>((set) => ({
+  selectedElement: null,
+  setSelectedElement: (element: any) => set({ selectedElement: element }),
+}));

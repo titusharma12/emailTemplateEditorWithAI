@@ -2,7 +2,9 @@ import React from 'react'
 
 const Settings = () => {
   return (
-    <div>Settings</div>
+    <div className='p-5'>
+      <h2 className='text-xl font-bold'>Settings</h2>
+    </div>
   )
 }
 

@@ -1,5 +1,5 @@
 "use client";
-import { useDragStore, useEmailTemplateStore } from "@/store/Hook";
+import { useDragStore, useEmailTemplateStore, useSelectedElementStore,  } from "@/store/Hook";
 import React, { useState } from "react";
 import ButtonComponent from "../customComponents/ElementComponent/ButtonComponent";
 import TextComponent from "../customComponents/ElementComponent/TextComponent";
@@ -13,6 +13,7 @@ export const ColumnLayout = ({ layout }: any) => {
   const [dragOver, setDragOver] = useState<any>();
    const {emailTemplate, setEmailTemplate}=useEmailTemplateStore()
     const {DragElementLayout, setDragElementLayout}=useDragStore()
+  const {selectedElement, setSelectedElement}=useSelectedElementStore()
 
    
   const onDragOverHandle = (e: any, index: number) => {
@@ -61,6 +62,7 @@ export const ColumnLayout = ({ layout }: any) => {
    
     return element?.type;
   }
+  console.log(selectedElement,'selectedElementselectedElement')
   
   return (
     <div className="">
@@ -77,9 +79,10 @@ export const ColumnLayout = ({ layout }: any) => {
               key={index}
               className={`${
                 index == dragOver?.index && dragOver?.columnId && "bg-green-100"
-              } ${!layout?.[index]?.type && 'border border-dashed bg-gray-100'} p-2 flex items-center justify-center `}
+              } ${!layout?.[index]?.type && 'border border-dashed bg-gray-100'} ${selectedElement?.layout?.dragLayout?.id === layout?.dragLayout?.id && selectedElement?.index === index && 'border-2 border-blue-500'} p-2 flex items-center justify-center `}
               onDragOver={(e) => onDragOverHandle(e, index)}
               onDrop={onDropHandle}
+              onClick={()=>setSelectedElement({layout:layout,index:index})}
             >
              { GetElementComponent(layout[index])??'drag element here'}
             </div>
