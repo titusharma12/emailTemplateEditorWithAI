@@ -1,10 +1,13 @@
 import React from 'react'
 
-const ImageComponent = ({imageUrl,style,outStyle}:any) => {
+const ImageComponent = ({imageUrl,style,outerStyle,url}:any) => {
   return (
-    <div>
+   
+      <a href={url} style={outerStyle}>
+
         <img src={imageUrl} alt="Image" style={style}/>
-    </div>
+      </a>
+  
   )
 }
 
