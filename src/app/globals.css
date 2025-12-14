@@ -1,2 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
+
+label{
+    font-weight: 600;
+    font-size: 14px;
+}

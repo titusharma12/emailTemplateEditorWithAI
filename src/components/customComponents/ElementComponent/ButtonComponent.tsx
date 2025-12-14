@@ -1,8 +1,8 @@
 import React from 'react'
 
-const ButtonComponent = ({style,content,url}:any) => {
+const ButtonComponent = ({style,content,url,outerStyle}:any) => {
   return (
-    <a href={url} >
+    <a href={url} style={outerStyle}>
      <button style={style}>{content}</button>
     </a>
   )
