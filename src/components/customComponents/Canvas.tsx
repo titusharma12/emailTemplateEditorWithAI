@@ -1,6 +1,6 @@
 'use client'
-import { useDeviceStore, useDragStore, useEmailTemplateStore } from '@/store/Hook';
-import React, { useEffect, useState } from 'react'
+import { useDeviceStore, useDragStore, useEmailTemplateStore, useSelectedElementStore } from '@/store/Hook';
+import React, { use, useEffect, useState } from 'react'
 import { ColumnLayout } from '../LayoutElements/ColumnLayout';
 
 const Canvas = () => {
@@ -8,6 +8,7 @@ const Canvas = () => {
    const [userInfo, setUserInfo] = useState<any>(null);
   const {DragElementLayout, setDragElementLayout}=useDragStore()
   const {emailTemplate, setEmailTemplate}=useEmailTemplateStore()
+  const {selectedElement, setSelectedElement}=useSelectedElementStore()
   const [dragOver , setDragOver]=useState(false);
   const onDragOver=(e:any)=>{
     e.preventDefault();
@@ -16,17 +17,59 @@ const Canvas = () => {
   }
   const onDropHandle=()=>{
     setDragOver(false);
-    console.log('dropped', DragElementLayout?.dragLayout);
+   
     if(DragElementLayout?.dragLayout){
       setEmailTemplate((prev:any)=>[...prev,DragElementLayout?.dragLayout])
     }
   }
   const getLayoutComponent=(layout:any)=>{
-    console.log('layout', layout);
+   
    if(layout?.dragLayout?.type==='column'){
     return <ColumnLayout layout={layout}/>
    }
   }
+
+
+  useEffect(()=>{
+    if(typeof window !== 'undefined') {
+      const StorageTemplate = JSON.parse(localStorage.getItem('emailTemplate')||'null');
+      setEmailTemplate(StorageTemplate||[]);
+    }
+  },[])
+
+  useEffect(() => {
+    if(typeof window !== 'undefined') {
+      localStorage.setItem('emailTemplate', JSON.stringify(emailTemplate));
+    }
+  }, [emailTemplate]);
+
+  // useEffect(()=>{
+  //   if(selectedElement){
+  //     let updatedEmailTemplate:any=[];
+  //     emailTemplate.forEach((item:any,index:number)=>{
+  //       if(item?.id===selectedElement?.layout?.id){
+  //         updatedEmailTemplate.push(selectedElement?.layout)
+  //       }
+  //       else{
+  //         updatedEmailTemplate.push(item)
+  //       }
+  //     })
+  //     setEmailTemplate(updatedEmailTemplate)
+
+  //   }
+  // },[selectedElement])
+  useEffect(() => {
+  if (!selectedElement) return;
+
+  setEmailTemplate((prev: any[]) =>
+    prev.map((item: any) =>
+      item?.dragLayout?.id === selectedElement?.layout?.dragLayout?.id
+        ? selectedElement.layout
+        : item
+    )
+  );
+}, [selectedElement]);
+
 
 
   return (

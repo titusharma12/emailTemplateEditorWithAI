@@ -17,7 +17,8 @@ const Settings = () => {
   //Copy the current SelectedElement
   const updatedData ={...selectedElement}
   //Update the specific Field
-  updatedData.layout[selectedElement?.index][fieldName]=value
+  updatedData.layout[selectedElement?.index][fieldName]=value;
+  console.log('updatedData',updatedData)
   //Update Original SelectedElement
   setSelectedElement(updatedData)
  }  

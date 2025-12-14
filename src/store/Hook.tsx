@@ -23,11 +23,15 @@ export const useDragStore = create<any>((set) => ({
 
 export const useEmailTemplateStore = create<any>((set) => ({
   emailTemplate: [],
-  setEmailTemplate: (updateFn: any) =>
+  setEmailTemplate: (value: any) =>
     set((state: any) => ({
-      emailTemplate: updateFn(state.emailTemplate),
+      emailTemplate:
+        typeof value === 'function'
+          ? value(state.emailTemplate)
+          : value,
     })),
 }));
+
 
 
 export const useSelectedElementStore = create<any>((set) => ({
