@@ -38,3 +38,9 @@ export const useSelectedElementStore = create<any>((set) => ({
   selectedElement: null,
   setSelectedElement: (element: any) => set({ selectedElement: element }),
 }));
+
+
+export const useHTMLCodeViewStore = create<any>((set) => ({
+  htmlCodeView: false,
+  viewHTMLCode: (value: boolean) => set({ htmlCodeView: value }),
+}));

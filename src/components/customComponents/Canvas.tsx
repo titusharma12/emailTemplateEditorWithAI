@@ -1,15 +1,19 @@
 'use client'
-import { useDeviceStore, useDragStore, useEmailTemplateStore, useSelectedElementStore } from '@/store/Hook';
+import { useDeviceStore, useDragStore, useEmailTemplateStore, useHTMLCodeViewStore, useSelectedElementStore } from '@/store/Hook';
 import React, { use, useEffect, useState } from 'react'
 import { ColumnLayout } from '../LayoutElements/ColumnLayout';
+import ViewHTMLDialogbox from './ViewHTMLDialogbox';
 
 const Canvas = () => {
+  const htmlRef=React.useRef<HTMLDivElement>(null);
   const { device, setDevice } = useDeviceStore();
    const [userInfo, setUserInfo] = useState<any>(null);
   const {DragElementLayout, setDragElementLayout}=useDragStore()
   const {emailTemplate, setEmailTemplate}=useEmailTemplateStore()
   const {selectedElement, setSelectedElement}=useSelectedElementStore()
   const [dragOver , setDragOver]=useState(false);
+  const {htmlCodeView, viewHTMLCode}=useHTMLCodeViewStore()
+  const [htmlCode, setHtmlCode]=useState<string>('');
   const onDragOver=(e:any)=>{
     e.preventDefault();
     setDragOver(true);
@@ -71,12 +75,28 @@ const Canvas = () => {
 }, [selectedElement]);
 
 
+useEffect(()=>{
+  if(htmlCodeView){
+    GetHTMLCode()
+  }} ,[htmlCodeView])
+
+const GetHTMLCode =()=>{
+  if(htmlRef?.current){
+   const htmlContent = htmlRef?.current?.innerHTML;
+   console.log("HTML Content:", htmlContent);
+   setHtmlCode(htmlContent);
+  }
+
+}
+
+
 
   return (
-    <div className='mt-20 flex justify-center'>
+    <div className='mt-10 flex justify-center'>
         <div className={`w-full  p-6  ${dragOver ? 'bg-purple-100 p-4': 'bg-white'}  ${device==='desktop'?'max-w-2xl':'max-w-md'}`}
         onDragOver={onDragOver}
         onDrop={onDropHandle}
+        ref={htmlRef}
         >
           <div>
 
@@ -96,6 +116,7 @@ const Canvas = () => {
           </div>
 
         </div>
+        <ViewHTMLDialogbox openDialog={htmlCodeView} setOpenDialog={viewHTMLCode} htmlCode={htmlCode}/>
     </div>
   )
 }

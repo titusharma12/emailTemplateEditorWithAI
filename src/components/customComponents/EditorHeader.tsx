@@ -3,10 +3,11 @@ import React from 'react'
 import { Button } from '../ui/button'
 import Image from 'next/image'
 import { Code, Monitor, Smartphone } from 'lucide-react'
-import { useDeviceStore } from '@/store/Hook'
+import { useDeviceStore, useHTMLCodeViewStore } from '@/store/Hook'
 
 const EditorHeader = () => {
 const { device, setDevice } = useDeviceStore();
+const {htmlCodeView, viewHTMLCode}=useHTMLCodeViewStore()
 
 console.log("Current device in EditorHeader:", device);
   return (
@@ -121,7 +122,11 @@ console.log("Current device in EditorHeader:", device);
             }}><Smartphone/>Mobile</Button>
         </div>
         <div className='flex gap-3'>
-            <Button variant={'ghost'} className='hover:text-[#7f57f1] cursor-pointer hover:bg-[#6d47e0]/10'><Code/></Button>
+            <Button variant={'ghost'} className='hover:text-[#7f57f1] cursor-pointer hover:bg-[#6d47e0]/10' 
+            onClick={()=>{
+              viewHTMLCode(true)
+            }}
+            ><Code/></Button>
             <Button variant={'outline'}>Send 
             Test Mail
             </Button>
