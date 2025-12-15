@@ -11,6 +11,45 @@ const AllInputBox = () => {
     const [isLoading, setIsLoading]=useState<boolean>(false)
     const {emailTemplate, setEmailTemplate}=useEmailTemplateStore()
 
+// const OnGenerate = async () => {
+//   const PROMPT = `${Prompt.EMAIL_PROMPT}\n${userInput}`;
+//   setIsLoading(true);
+
+//   try {
+//     const result = await axios.post("/api/ai-email-generate", {
+//       prompt: PROMPT,
+//       userEmail: "",
+//       tId: 0,
+//     });
+
+//     let aiData = result.data.data;
+
+//     // 🔥 CLEAN markdown if present
+//     if (typeof aiData === "string") {
+//       aiData = aiData
+//         .replace(/```json/g, "")
+//         .replace(/```/g, "")
+//         .trim();
+//     }
+
+//     const parsedTemplate = JSON.parse(aiData);
+
+//     console.log("Parsed Template:", parsedTemplate);
+
+//     // ✅ STORE CLEAN JSON
+//     setEmailTemplate(parsedTemplate);
+
+//     if(parsedTemplate){
+
+//       router.push("/editor/1234");
+//     }
+
+//   } catch (error) {
+//     console.error("Error generating email template:", error);
+//   } finally {
+//     setIsLoading(false);
+//   }
+// };
 const OnGenerate = async () => {
   const PROMPT = `${Prompt.EMAIL_PROMPT}\n${userInput}`;
   setIsLoading(true);
@@ -24,20 +63,18 @@ const OnGenerate = async () => {
 
     let aiData = result.data.data;
 
-    // 🔥 CLEAN markdown if present
     if (typeof aiData === "string") {
-      aiData = aiData
-        .replace(/```json/g, "")
-        .replace(/```/g, "")
-        .trim();
+      aiData = aiData.replace(/```json/g, "").replace(/```/g, "").trim();
     }
 
-    const parsedTemplate = JSON.parse(aiData);
+    let parsedTemplate = JSON.parse(aiData);
+    parsedTemplate = Array.isArray(parsedTemplate) ? parsedTemplate : [parsedTemplate];
 
     console.log("Parsed Template:", parsedTemplate);
 
-    // ✅ STORE CLEAN JSON
+    // Save in Zustand + localStorage immediately
     setEmailTemplate(parsedTemplate);
+    localStorage.setItem('emailTemplate', JSON.stringify(parsedTemplate));
 
     router.push("/editor/1234");
   } catch (error) {
@@ -46,6 +83,7 @@ const OnGenerate = async () => {
     setIsLoading(false);
   }
 };
+
 
 
   return (
