@@ -14,9 +14,12 @@ const SliderField: React.FC<SliderFieldProps> = ({
   type = 'px',
 }) => {
   // Safely extract number
-  const FormattedValue=(val:string)=>{
-    return Number(val.toString().replace(type,''));
-  }
+  const FormattedValue = (val: string) => {
+    if (!val && val !== "") return 0;
+    const s = val.toString().trim();
+    const m = s.match(/-?\d+(?:\.\d+)?/);
+    return m ? Number(m[0]) : 0;
+  };
 
   return (
     <div className="flex flex-col gap-2">

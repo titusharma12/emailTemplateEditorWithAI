@@ -21,17 +21,34 @@ export const useDragStore = create<any>((set) => ({
 }));
 
 
-export const useEmailTemplateStore = create<any>((set) => ({
+export const useEmailTemplateStore = create<any>((set, get) => ({
   emailTemplate: [],
+  // setEmailTemplate persists to localStorage when running in the browser
   setEmailTemplate: (value: any) =>
-    set((state: any) => ({
-      emailTemplate:
-        typeof value === 'function'
-          ? value(state.emailTemplate)
-          : value,
-    })),
+    set((state: any) => {
+      const newVal =
+        typeof value === "function" ? value(state.emailTemplate) : value;
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem("emailTemplate", JSON.stringify(newVal));
+        } catch (e) {
+          // ignore storage errors
+        }
+      }
+      return { emailTemplate: newVal };
+    }),
+  // initialize emailTemplate from localStorage (call only on client)
+  initEmailTemplate: () => {
+    if (typeof window !== "undefined") {
+      try {
+        const StorageTemplate = JSON.parse(localStorage.getItem("emailTemplate") || "null");
+        set({ emailTemplate: StorageTemplate || [] });
+      } catch (e) {
+        set({ emailTemplate: [] });
+      }
+    }
+  },
 }));
-
 
 
 export const useSelectedElementStore = create<any>((set) => ({

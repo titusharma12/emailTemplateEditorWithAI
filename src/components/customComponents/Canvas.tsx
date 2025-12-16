@@ -9,7 +9,7 @@ const Canvas = () => {
   const { device, setDevice } = useDeviceStore();
    const [userInfo, setUserInfo] = useState<any>(null);
   const {DragElementLayout, setDragElementLayout}=useDragStore()
-  const {emailTemplate, setEmailTemplate}=useEmailTemplateStore()
+  const {emailTemplate, setEmailTemplate, initEmailTemplate}=useEmailTemplateStore()
   const {selectedElement, setSelectedElement}=useSelectedElementStore()
   const [dragOver , setDragOver]=useState(false);
   const {htmlCodeView, viewHTMLCode}=useHTMLCodeViewStore()
@@ -35,17 +35,8 @@ const Canvas = () => {
 
 
   useEffect(()=>{
-    if(typeof window !== 'undefined') {
-      const StorageTemplate = JSON.parse(localStorage.getItem('emailTemplate')||'null');
-      setEmailTemplate(StorageTemplate||[]);
-    }
+    initEmailTemplate?.();
   },[])
-
-  useEffect(() => {
-    if(typeof window !== 'undefined') {
-      localStorage.setItem('emailTemplate', JSON.stringify(emailTemplate));
-    }
-  }, [emailTemplate]);
 
   // useEffect(()=>{
   //   if(selectedElement){
