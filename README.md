@@ -34,3 +34,16 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+prompt example
+
+Create a Christmas promotional email template for ResultBull AI announcing a 40% OFF holiday sale. Include:
+- Festive Christmas theme with holiday greetings
+- Highlight the 40% discount offer prominently
+- Explain ResultBull AI benefits and features
+- Add urgency (limited time offer)
+- Include multiple CTAs for "Get 40% Off Now"
+- Use Christmas emojis and festive language
+- Add customer testimonials or social proof section
+

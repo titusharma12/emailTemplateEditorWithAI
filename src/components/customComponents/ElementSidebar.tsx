@@ -25,7 +25,7 @@ const ElementSidebar = () => {
     })
   }
   return (
-    <div className='p-4 h-screen shadow-sm'>
+    <div className='p-4 flex flex-col h-full min-h-0 overflow-auto shadow-sm'>
       <h2 className='text-lg font-bold'>Layouts</h2>
       <div className='grid grid-cols-1 mt-3 md:grid-cols-2 gap-5'>
         {

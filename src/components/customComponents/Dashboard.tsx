@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
+  const router = useRouter();
   const [userInfo, setUserInfo] = useState<any>(null);
   const [emailTemplates, setEmailTemplates] = useState<any[]>([]);
 
@@ -28,7 +30,8 @@ const Dashboard = () => {
           Hello, {userInfo?.name || "User"}
         </span>
 
-        <Button className="ml-4 capitalize bg-[#7f57f1] text-white hover:opacity-90 transition-opacity px-4 py-2 text-base">
+        <Button className="ml-4 capitalize bg-[#7f57f1] text-white hover:opacity-90 transition-opacity px-4 py-2 text-base"
+        onClick={()=>{router.push('/dashboard/create')}}>
           + Create new email template
         </Button>
       </div>
@@ -49,7 +52,7 @@ const Dashboard = () => {
             unoptimized
             className="w-[400px] object-contain h-auto mt-10 rounded-lg"
           />
-          <Button className="bg-[#7f57f1] text-white hover:opacity-90 transition-opacity px-6 py-5 text-base">
+          <Button className="bg-[#7f57f1] text-white hover:opacity-90 transition-opacity px-6 py-5 text-base"  onClick={()=>{router.push('/dashboard/create')}}>
             +Create New
           </Button>
         </div>
