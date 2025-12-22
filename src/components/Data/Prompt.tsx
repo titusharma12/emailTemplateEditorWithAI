@@ -36,7 +36,7 @@ export default {
        - listStyle: "bullet" or "number" for List elements
        - imageUrl: '/image.png' or '/logo.svg' for images
        - url: Link destination (use "#" as placeholder)
-       - style: CSS styles (color, fontSize, fontWeight, backgroundColor, padding, textAlign, borderRadius, etc.)
+       - style: CSS styles (color, fontSize, fontWeight, backgroundColor, padding, textAlign, borderRadius, lineHeight, etc.)
        - outerStyle: Container styles (display, justifyContent, alignItems, width)
        - id: Unique numeric ID (increment for each element)
     
@@ -77,7 +77,33 @@ export default {
        - Add 2-4 paragraphs of body content minimum
        - Use List elements for features, benefits, steps, or key points (3-5 items per list)
     
-    9. Footer Best Practices:
+    9. List Element Specifications (CRITICAL):
+       - List elements MUST include:
+         * type: "List"
+         * label: Descriptive label
+         * items: Array of strings (each item is one list item)
+         * listStyle: Either "bullet" or "number"
+         * style: Object with fontSize, color, padding, lineHeight, marginLeft (use marginLeft: "20px" for proper indentation)
+         * outerStyle: Object with width: "100%"
+         * id: Unique numeric ID
+       - Example List element:
+         {
+           "type": "List",
+           "label": "Features List",
+           "items": ["Feature one text here", "Feature two text here", "Feature three text here"],
+           "listStyle": "bullet",
+           "style": {
+             "fontSize": "16px",
+             "color": "#1f2937",
+             "padding": "10px 20px",
+             "lineHeight": "1.8",
+             "marginLeft": "20px"
+           },
+           "outerStyle": {"width": "100%"},
+           "id": 1009
+         }
+    
+    10. Footer Best Practices:
        - Use 1 Column layout for clean, stacked footer
        - Include 4-5 footer elements in this order:
          1. Contact info text (address, phone, email)
@@ -162,9 +188,20 @@ export default {
         "1": {
           "type": "List",
           "label": "Key Features List",
-          "items": ["Advanced AI automation that learns your workflow", "Real-time collaboration with your entire team", "Powerful analytics dashboard with custom reports", "Mobile app for iOS and Android devices"],
+          "items": [
+            "Advanced AI automation that learns your workflow",
+            "Real-time collaboration with your entire team",
+            "Powerful analytics dashboard with custom reports",
+            "Mobile app for iOS and Android devices"
+          ],
           "listStyle": "bullet",
-          "style": {"fontSize": "16px", "color": "#1f2937", "padding": "10px 40px", "lineHeight": "2"},
+          "style": {
+            "fontSize": "16px",
+            "color": "#1f2937",
+            "padding": "10px 20px",
+            "lineHeight": "1.8",
+            "marginLeft": "20px"
+          },
           "outerStyle": {"width": "100%"},
           "id": 1009
         },
@@ -267,7 +304,8 @@ export default {
     - Vary column layouts throughout the template
     - Write complete, realistic email copy based on user's description
     - Use List elements for features, benefits, or steps (3-5 items per list)
-    - List elements must have "items" array and "listStyle" ("bullet" or "number")
+    - List elements MUST have "items" array and "listStyle" ("bullet" or "number")
+    - List elements MUST include marginLeft: "20px" in style for proper indentation
     - Footer must be 1 Column layout with 4+ stacked elements
     - Always include proper contact info, links, social icons, and copyright in footer
     - Use "textarea" property for Text elements (not "content")
