@@ -8,7 +8,7 @@ import InputStyleField from './Settings/InputStyleField'
 import SliderField from './Settings/SliderField'
 import TextareaField from './Settings/TextareaField'
 import ToggleGroupField from './Settings/ToggleGroupField'
-import { TextAlignCenter, TextAlignEnd, TextAlignStart } from 'lucide-react'
+import { Circle, Disc, ListOrdered, Square, TextAlignCenter, TextAlignEnd, TextAlignStart } from 'lucide-react'
 import DropdownField from './Settings/DropdownField'
 import ImagePreview from './Settings/ImagePreview'
 
@@ -26,6 +26,12 @@ export const TextTransformOptions = [
   { value: 'capitalize', icon: <span className='capitalize'>Aa</span> }
 ];
 
+export const ListStyleOptions = [
+  { value: 'disc', icon: <Disc size={18} /> },
+  { value: 'circle', icon: <Circle size={18} /> },
+  { value: 'square', icon: <Square size={18} /> },
+  { value: 'decimal', icon: <ListOrdered size={18} /> },
+];
 
 const Settings = () => {
    const {selectedElement, setSelectedElement}=useSelectedElementStore()
@@ -82,6 +88,32 @@ const Settings = () => {
   setSelectedElement(updateElement)
 
 }
+const onHandleListItemsChange = (value: string) => {
+  const updatedData = {...selectedElement}
+  // Simply split by newlines - no filtering
+  const items = value.split('\n')
+  updatedData.layout[selectedElement?.index]['listItems'] = items
+  setSelectedElement(updatedData)
+}
+ const onHandleListStyleChange  = (fieldName:string ,fieldValue:string) => {
+ 
+  let updateElement={...selectedElement,
+    layout:{
+      ...selectedElement?.layout,
+      [selectedElement?.index]:{
+        ...selectedElement?.layout[selectedElement?.index],
+        listStyle:{
+          ...selectedElement?.layout[selectedElement?.index]?.listStyle,
+          [fieldName]:fieldValue
+        }}
+    }
+    
+  }  
+  //Update Original SelectedElement
+  setSelectedElement(updateElement)
+
+}
+ 
   return (
     <div className='p-5 flex flex-col h-full min-h-0 overflow-auto gap-4'>
       <h2 className='text-xl font-bold'>Settings</h2>
@@ -101,6 +133,25 @@ const Settings = () => {
 
         )
       }
+       {/* List Items Editor */}
+      {
+        element?.type === 'List' && (
+          <TextareaField 
+            label={'List Items (one per line)'} 
+            value={element?.listItems?.join('\n') || ''} 
+            onHandleChangeInput={(value:string)=>{
+              onHandleListItemsChange(value)
+            }}
+             onKeyDown={(e: React.KeyboardEvent) => {
+        // Prevent form submission on Enter
+        if (e.key === 'Enter') {
+          e.stopPropagation()
+        }
+      }}
+          />
+        )
+      }
+
       {
         element?.textarea && (
          < TextareaField label={'Text Area'} value={element?.textarea} onHandleChangeInput={(value:string)=>{
@@ -194,6 +245,37 @@ const Settings = () => {
           }}/>
         )
       }
+        {
+        element?.type === 'List' && element?.listStyle && (
+          <div>
+           
+            {
+              element?.listStyle?.marginBottom &&(
+                <InputStyleField label={'List Item Spacing'} value={element?.listStyle?.marginBottom} onHandleStyleChange={(value:string)=>{
+                  onHandleListStyleChange('marginBottom',value)
+                }}/>
+              )
+            }
+          </div>
+        )
+      }
+      {
+        // toggle field add
+        element?.type === 'List'  &&(
+          <div className='mt-4'>
+          
+            {
+              element?.style?.listStyleType &&(
+                <ToggleGroupField label={'List Style Type'} value={element?.style?.listStyleType} options={ListStyleOptions} onHandleStyleChange={(value:string)=>{
+                  onHandleListStyleChange('listStyleType',value)
+                }}/>
+              )
+            }
+          </div>
+        )
+      }
+      
+
 
   {
     element?.outerStyle &&(

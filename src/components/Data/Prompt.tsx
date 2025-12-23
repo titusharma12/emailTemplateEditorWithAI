@@ -2,314 +2,330 @@ import dedent from "dedent";
 
 export default {
   EMAIL_PROMPT: dedent`
-    You are a professional Email Template Builder AI Assistant.
-    
-    Your task: Generate **complete, visually appealing email templates in JSON format** for a drag-and-drop email builder.
+    Generate a complete email template as a JSON array. Follow these rules EXACTLY:
 
-    REQUIREMENTS:
-    1. Create LONG, COMPLETE templates with:
-       - Header section (logo/branding)
-       - Main content sections (mix of text, images, buttons)
-       - Footer section (contact info, links, social icons)
-       - Use 8-15 column sections total for a full-length email
-    
-    2. Column Layout Variety - Mix these layouts throughout:
-       - "1 Column": Full-width sections (headers, hero images, footers)
-       - "2 Column": Side-by-side content (features, benefits, image+text)
-       - "3 Column": Three equal sections (product showcase, stats, features)
-       - "4 Column": Four equal sections (social proof, small icons, benefits)
-    
-    3. Element Types Available:
-       - LogoHeader: Company logo in header
-       - Logo: Logo image anywhere
-       - Image: Content images ('/image.png' placeholder)
-       - Text: Headings, paragraphs, body text
-       - Button: Call-to-action buttons
-       - SocialIcons: Social media icons (always include in footer)
-       - List: Bulleted or numbered lists for features, benefits, steps
-    
-    4. Each Element Must Have:
-       - type: Element type
-       - label: Descriptive label
-       - content or textarea: Text content (use textarea for Text elements, content for Button elements)
-       - items: Array of strings for List elements (e.g., ["Feature 1", "Feature 2", "Feature 3"])
-       - listStyle: "bullet" or "number" for List elements
-       - imageUrl: '/image.png' or '/logo.svg' for images
-       - url: Link destination (use "#" as placeholder)
-       - style: CSS styles (color, fontSize, fontWeight, backgroundColor, padding, textAlign, borderRadius, lineHeight, etc.)
-       - outerStyle: Container styles (display, justifyContent, alignItems, width)
-       - id: Unique numeric ID (increment for each element)
-    
-    5. Each Column Section Must Have:
-       - Numbered keys ("0", "1", "2", etc.) for each element in that column
-       - dragLayout object with:
-         * type: "column"
-         * numOfCol: Number of columns (1, 2, 3, or 4)
-         * label: Layout label ("1 Column", "2 Column", "3 Column", "4 Column")
-         * id: Unique numeric ID
-    
-    6. Design Best Practices:
-       - Use professional color schemes (primary: #007bff, secondary: #6c757d, text: #1f2937, light: #f8f9fa)
-       - Include proper spacing (padding: 15px-30px)
-       - Make buttons prominent (padding: 12px 24px, borderRadius: 6px)
-       - Use hierarchy (headings: 24-32px, body: 14-16px, small: 12px)
-       - Center-align headers and CTAs
-       - Left-align body text for readability
-    
-    7. Required Sections:
-       - HEADER: LogoHeader or Logo (1 Column)
-       - HERO/INTRO: Main headline + subtext (1 Column)
-       - CONTENT: 4-6 sections with varied layouts (mix 1-4 Column)
-       - CTA: Primary call-to-action button (1 Column)
-       - FOOTER: Properly formatted with:
-         * Contact information section
-         * Links section (Privacy Policy, Terms, Unsubscribe)
-         * Social media icons section
-         * Copyright text
-         * Use 1 Column layout for footer with multiple Text elements and SocialIcons
-    
-    8. Content Guidelines:
-       - Write complete, realistic email copy based on user's description
-       - Use professional, engaging language
-       - Include emojis sparingly for visual interest
-       - Make CTAs action-oriented ("Get Started", "Learn More", "Shop Now", "Download Now")
-       - Create coherent narrative flow from header to footer
-       - Add 2-4 paragraphs of body content minimum
-       - Use List elements for features, benefits, steps, or key points (3-5 items per list)
-    
-    9. List Element Specifications (CRITICAL):
-       - List elements MUST include:
-         * type: "List"
-         * label: Descriptive label
-         * items: Array of strings (each item is one list item)
-         * listStyle: Either "bullet" or "number"
-         * style: Object with fontSize, color, padding, lineHeight, marginLeft (use marginLeft: "20px" for proper indentation)
-         * outerStyle: Object with width: "100%"
-         * id: Unique numeric ID
-       - Example List element:
-         {
-           "type": "List",
-           "label": "Features List",
-           "items": ["Feature one text here", "Feature two text here", "Feature three text here"],
-           "listStyle": "bullet",
-           "style": {
-             "fontSize": "16px",
-             "color": "#1f2937",
-             "padding": "10px 20px",
-             "lineHeight": "1.8",
-             "marginLeft": "20px"
-           },
-           "outerStyle": {"width": "100%"},
-           "id": 1009
-         }
-    
-    10. Footer Best Practices:
-       - Use 1 Column layout for clean, stacked footer
-       - Include 4-5 footer elements in this order:
-         1. Contact info text (address, phone, email)
-         2. Links text (Privacy | Terms | Unsubscribe)
-         3. SocialIcons element
-         4. Copyright text
-       - Use consistent small font size (12px)
-       - Use muted colors (#6c757d)
-       - Center-align all footer content
-       - Add proper spacing between elements
-    
-    EXAMPLE STRUCTURE:
+    OUTPUT FORMAT:
+    - Return ONLY a JSON array starting with [ and ending with ]
+    - NO markdown, NO explanations, NO comments
+    - Use double quotes for all strings
+    - No line breaks inside string values
 
+    MANDATORY STRUCTURE - YOU MUST INCLUDE ALL 9 SECTIONS:
+
+    Section 1: LOGO HEADER (1 Column)
+    Section 2: HERO IMAGE (1 Column) - use Unsplash URL
+    Section 3: HEADLINE + SUBTEXT (1 Column) - 2 Text elements
+    Section 4: INTRO PARAGRAPH (1 Column) - 1 Text element
+    Section 5: FEATURES HEADING + LIST (1 Column) - 1 Text + 1 List element ⚠️ MANDATORY
+    Section 6: IMAGE + TEXT (2 Column) - use different Unsplash URL
+    Section 7: BENEFITS HEADING + LIST (1 Column) - 1 Text + 1 List element ⚠️ MANDATORY
+    Section 8: CTA BUTTON (1 Column)
+    Section 9: FOOTER (1 Column) - 4 elements: Contact Text + Links Text + SocialIcons + Copyright
+
+    IMAGE URLS - USE THESE EXACT URLS (rotate through them):
+    - https://images.unsplash.com/photo-1607082349566-187342175e2f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHNhbGV8ZW58MHx8MHx8fDA%3D
+    - https://images.unsplash.com/photo-1572584642822-6f8de0243c93?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHNhbGV8ZW58MHx8MHx8fDA%3D
+    - https://images.unsplash.com/photo-1611403570720-162d8829689a?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+    - https://images.unsplash.com/photo-1766324934839-313529832615?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+    - Logo: /logo.svg (ONLY for LogoHeader)
+
+    LIST ELEMENT - ⚠️ COPY THIS EXACTLY (REQUIRED IN SECTIONS 5 AND 7):
+    {
+      "type": "List",
+      "label": "Features List",
+      "listItems": ["First benefit or feature here", "Second benefit or feature here", "Third benefit or feature here", "Fourth benefit or feature here"],
+      "listType": "unordered",
+      "style": {
+        "backgroundColor": "#fff",
+        "color": "#000000",
+        "padding": "10px",
+        "fontSize": "16px",
+        "lineHeight": "1.5",
+        "margin": "0px",
+        "listStyleType": "disc",
+        "listStylePosition": "inside",
+        "paddingLeft": "20px"
+      },
+      "listStyle": {
+        "display": "list-item",
+        "marginBottom": "8px"
+      },
+      "outerStyle": {
+        "backgroundColor": "#fff",
+        "width": "100%",
+        "padding": "10px"
+      },
+      "id": 1011
+    }
+
+    OTHER ELEMENT TEMPLATES:
+
+    LogoHeader:
+    {
+      "type": "LogoHeader",
+      "label": "Logo Header",
+      "imageUrl": "/logo.svg",
+      "alt": "Company Logo",
+      "url": "#",
+      "style": {"backgroundColor": "#ffffff", "padding": "20px", "height": "40%", "width": "40%"},
+      "outerStyle": {"display": "flex", "justifyContent": "center", "alignItems": "center", "backgroundColor": "#fff", "width": "100%"},
+      "id": 1001
+    }
+
+    Image:
+    {
+      "type": "Image",
+      "label": "Hero Image",
+      "imageUrl": "PICK_UNSPLASH_URL_FROM_LIST_ABOVE",
+      "alt": "Hero Banner",
+      "url": "#",
+      "style": {"backgroundColor": "#ffffff", "padding": "0px", "width": "100%"},
+      "outerStyle": {"display": "flex", "width": "100%", "justifyContent": "center", "alignItems": "center", "backgroundColor": "#fff"},
+      "id": 1003
+    }
+
+    Text:
+    {
+      "type": "Text",
+      "label": "Heading",
+      "textarea": "Your text content here",
+      "style": {"backgroundColor": "#fff", "color": "#1f2937", "padding": "30px 20px 10px", "textAlign": "center", "fontSize": "32px", "fontWeight": "bold"},
+      "outerStyle": {"backgroundColor": "#fff", "width": "100%"},
+      "id": 1005
+    }
+
+    Button:
+    {
+      "type": "Button",
+      "label": "CTA Button",
+      "content": "Get Started Now",
+      "url": "#",
+      "style": {"textAlign": "center", "backgroundColor": "#007bff", "color": "#ffffff", "padding": "14px 32px", "fontSize": "16px", "borderRadius": "6px", "fontWeight": "bold", "border": "none"},
+      "outerStyle": {"display": "flex", "justifyContent": "center", "alignItems": "center", "width": "100%", "padding": "30px 0"},
+      "id": 1016
+    }
+
+    SocialIcons (REQUIRED IN FOOTER):
+    {
+      "type": "SocialIcons",
+      "label": "Social Icons",
+      "socialIcons": [
+        {"icon": "https://cdn-icons-png.flaticon.com/128/2111/2111463.png", "url": "#"},
+        {"icon": "https://cdn-icons-png.flaticon.com/128/5968/5968852.png", "url": "#"},
+        {"icon": "https://cdn-icons-png.flaticon.com/128/5968/5968756.png", "url": "#"}
+      ],
+      "options": [
+        {"icon": "https://cdn-icons-png.flaticon.com/128/2111/2111463.png", "url": "#"},
+        {"icon": "https://cdn-icons-png.flaticon.com/128/5968/5968852.png", "url": "#"},
+        {"icon": "https://cdn-icons-png.flaticon.com/128/5968/5968756.png", "url": "#"}
+      ],
+      "style": {"width": 40, "height": 40},
+      "outerStyle": {"display": "flex", "gap": 15, "justifyContent": "center", "alignItems": "center", "width": "100%", "padding": "15px 0"},
+      "id": 1020
+    }
+
+    COMPLETE TEMPLATE EXAMPLE (9 SECTIONS - FOLLOW THIS STRUCTURE):
     [
       {
         "0": {
           "type": "LogoHeader",
-          "label": "Company Logo Header",
+          "label": "Logo Header",
           "imageUrl": "/logo.svg",
           "alt": "Company Logo",
           "url": "#",
-          "style": {"padding": "20px 0", "backgroundColor": "#ffffff"},
-          "outerStyle": {"display": "flex", "justifyContent": "center", "alignItems": "center", "width": "100%"},
+          "style": {"backgroundColor": "#ffffff", "padding": "20px", "height": "40%", "width": "40%"},
+          "outerStyle": {"display": "flex", "justifyContent": "center", "alignItems": "center", "backgroundColor": "#fff", "width": "100%"},
           "id": 1001
         },
-        "dragLayout": {
-          "type": "column",
-          "numOfCol": 1,
-          "label": "1 Column",
-          "id": 1002
-        }
+        "dragLayout": {"type": "column", "numOfCol": 1, "label": "1 Column", "id": 1002}
+      },
+      {
+        "0": {
+          "type": "Image",
+          "label": "Hero Image",
+          "imageUrl": "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHNhbGV8ZW58MHx8MHx8fDA%3D",
+          "alt": "Hero Banner",
+          "url": "#",
+          "style": {"backgroundColor": "#ffffff", "padding": "0px", "width": "100%"},
+          "outerStyle": {"display": "flex", "width": "100%", "justifyContent": "center", "alignItems": "center", "backgroundColor": "#fff"},
+          "id": 1003
+        },
+        "dragLayout": {"type": "column", "numOfCol": 1, "label": "1 Column", "id": 1004}
       },
       {
         "0": {
           "type": "Text",
           "label": "Main Headline",
-          "textarea": "🚀 Exciting New Features Just Launched!",
-          "style": {"fontSize": "32px", "fontWeight": "bold", "color": "#1f2937", "textAlign": "center", "padding": "30px 20px 10px"},
-          "outerStyle": {"width": "100%"},
-          "id": 1003
+          "textarea": "Welcome to Our Amazing Service",
+          "style": {"backgroundColor": "#fff", "color": "#1f2937", "padding": "30px 20px 10px", "textAlign": "center", "fontSize": "32px", "fontWeight": "bold"},
+          "outerStyle": {"backgroundColor": "#fff", "width": "100%"},
+          "id": 1005
         },
         "1": {
           "type": "Text",
           "label": "Subheadline",
-          "textarea": "Discover what's new and how it can help you succeed",
-          "style": {"fontSize": "16px", "color": "#6c757d", "textAlign": "center", "padding": "0 20px 30px"},
-          "outerStyle": {"width": "100%"},
-          "id": 1004
+          "textarea": "Discover features that will transform your workflow",
+          "style": {"backgroundColor": "#fff", "color": "#6c757d", "padding": "0px 20px 30px", "textAlign": "center", "fontSize": "16px", "fontWeight": "normal"},
+          "outerStyle": {"backgroundColor": "#fff", "width": "100%"},
+          "id": 1006
         },
-        "dragLayout": {
-          "type": "column",
-          "numOfCol": 1,
-          "label": "1 Column",
-          "id": 1005
-        }
+        "dragLayout": {"type": "column", "numOfCol": 1, "label": "1 Column", "id": 1007}
       },
       {
         "0": {
           "type": "Text",
-          "label": "Introduction Paragraph",
-          "textarea": "We're thrilled to announce our latest updates that will transform the way you work. After months of development and testing, we've created features that our users have been requesting most.",
-          "style": {"fontSize": "16px", "color": "#1f2937", "padding": "20px", "textAlign": "left", "lineHeight": "1.6"},
-          "outerStyle": {"width": "100%"},
-          "id": 1006
+          "label": "Introduction",
+          "textarea": "We are excited to share our latest innovations with you. Our team has been working to create something special that will make your life easier and more productive.",
+          "style": {"backgroundColor": "#fff", "color": "#1f2937", "padding": "20px", "textAlign": "left", "fontSize": "16px", "fontWeight": "normal"},
+          "outerStyle": {"backgroundColor": "#fff", "width": "100%"},
+          "id": 1008
         },
-        "dragLayout": {
-          "type": "column",
-          "numOfCol": 1,
-          "label": "1 Column",
-          "id": 1007
-        }
+        "dragLayout": {"type": "column", "numOfCol": 1, "label": "1 Column", "id": 1009}
       },
       {
         "0": {
           "type": "Text",
           "label": "Features Heading",
-          "textarea": "✨ What's New",
-          "style": {"fontSize": "24px", "fontWeight": "bold", "color": "#1f2937", "padding": "30px 20px 10px", "textAlign": "center"},
-          "outerStyle": {"width": "100%"},
-          "id": 1008
+          "textarea": "Key Features",
+          "style": {"backgroundColor": "#fff", "color": "#1f2937", "padding": "30px 20px 10px", "textAlign": "center", "fontSize": "24px", "fontWeight": "bold"},
+          "outerStyle": {"backgroundColor": "#fff", "width": "100%"},
+          "id": 1010
         },
         "1": {
           "type": "List",
-          "label": "Key Features List",
-          "items": [
-            "Advanced AI automation that learns your workflow",
-            "Real-time collaboration with your entire team",
-            "Powerful analytics dashboard with custom reports",
-            "Mobile app for iOS and Android devices"
-          ],
-          "listStyle": "bullet",
-          "style": {
-            "fontSize": "16px",
-            "color": "#1f2937",
-            "padding": "10px 20px",
-            "lineHeight": "1.8",
-            "marginLeft": "20px"
-          },
-          "outerStyle": {"width": "100%"},
-          "id": 1009
+          "label": "Features List",
+          "listItems": ["Automated workflow management that saves hours", "Real-time team collaboration tools", "Advanced analytics and reporting dashboard", "Mobile apps for iOS and Android"],
+          "listType": "unordered",
+          "style": {"backgroundColor": "#fff", "color": "#000000", "padding": "10px", "fontSize": "16px", "lineHeight": "1.5", "margin": "0px", "listStyleType": "disc", "listStylePosition": "inside", "paddingLeft": "20px"},
+          "listStyle": {"display": "list-item", "marginBottom": "8px"},
+          "outerStyle": {"backgroundColor": "#fff", "width": "100%", "padding": "10px"},
+          "id": 1011
         },
-        "dragLayout": {
-          "type": "column",
-          "numOfCol": 1,
-          "label": "1 Column",
-          "id": 1010
-        }
+        "dragLayout": {"type": "column", "numOfCol": 1, "label": "1 Column", "id": 1012}
       },
       {
         "0": {
           "type": "Image",
-          "label": "Feature Image 1",
-          "imageUrl": "/image.png",
+          "label": "Feature Image",
+          "imageUrl": "https://images.unsplash.com/photo-1572584642822-6f8de0243c93?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHNhbGV8ZW58MHx8MHx8fDA%3D",
           "alt": "Feature showcase",
-          "style": {"width": "100%", "borderRadius": "8px", "padding": "10px"},
-          "outerStyle": {"width": "100%"},
-          "id": 1011
+          "url": "#",
+          "style": {"backgroundColor": "#ffffff", "padding": "10px", "width": "100%", "borderRadius": "8px"},
+          "outerStyle": {"display": "flex", "width": "100%", "justifyContent": "center", "alignItems": "center", "backgroundColor": "#fff"},
+          "id": 1013
         },
         "1": {
           "type": "Text",
           "label": "Feature Description",
-          "textarea": "Smart automation that saves you hours every week. Set it up once and let it work for you. Our new AI-powered assistant learns your preferences and adapts to your workflow.",
-          "style": {"fontSize": "16px", "color": "#1f2937", "padding": "20px", "textAlign": "left", "lineHeight": "1.6"},
-          "outerStyle": {"width": "100%"},
-          "id": 1012
+          "textarea": "Our smart automation learns your preferences and adapts to your workflow. Set it up once and let it work for you while you focus on what matters most.",
+          "style": {"backgroundColor": "#fff", "color": "#1f2937", "padding": "20px", "textAlign": "left", "fontSize": "16px", "fontWeight": "normal"},
+          "outerStyle": {"backgroundColor": "#fff", "width": "100%"},
+          "id": 1014
         },
-        "dragLayout": {
-          "type": "column",
-          "numOfCol": 2,
-          "label": "2 Column",
-          "id": 1013
-        }
+        "dragLayout": {"type": "column", "numOfCol": 2, "label": "2 Column", "id": 1015}
+      },
+      {
+        "0": {
+          "type": "Text",
+          "label": "Benefits Heading",
+          "textarea": "Why Choose Us",
+          "style": {"backgroundColor": "#fff", "color": "#1f2937", "padding": "30px 20px 10px", "textAlign": "center", "fontSize": "24px", "fontWeight": "bold"},
+          "outerStyle": {"backgroundColor": "#fff", "width": "100%"},
+          "id": 1023
+        },
+        "1": {
+          "type": "List",
+          "label": "Benefits List",
+          "listItems": ["Save time with intelligent automation", "Collaborate seamlessly with your team", "Get insights from powerful analytics", "Access from anywhere on any device"],
+          "listType": "unordered",
+          "style": {"backgroundColor": "#fff", "color": "#000000", "padding": "10px", "fontSize": "16px", "lineHeight": "1.5", "margin": "0px", "listStyleType": "disc", "listStylePosition": "inside", "paddingLeft": "20px"},
+          "listStyle": {"display": "list-item", "marginBottom": "8px"},
+          "outerStyle": {"backgroundColor": "#fff", "width": "100%", "padding": "10px"},
+          "id": 1024
+        },
+        "dragLayout": {"type": "column", "numOfCol": 1, "label": "1 Column", "id": 1025}
       },
       {
         "0": {
           "type": "Button",
           "label": "Primary CTA",
-          "content": "Explore New Features",
+          "content": "Get Started Now",
           "url": "#",
-          "style": {"backgroundColor": "#007bff", "color": "#ffffff", "padding": "14px 32px", "borderRadius": "6px", "fontSize": "16px", "fontWeight": "bold", "border": "none", "textAlign": "center"},
+          "style": {"textAlign": "center", "backgroundColor": "#007bff", "color": "#ffffff", "padding": "14px 32px", "fontSize": "16px", "borderRadius": "6px", "fontWeight": "bold", "border": "none"},
           "outerStyle": {"display": "flex", "justifyContent": "center", "alignItems": "center", "width": "100%", "padding": "30px 0"},
-          "id": 1014
+          "id": 1016
         },
-        "dragLayout": {
-          "type": "column",
-          "numOfCol": 1,
-          "label": "1 Column",
-          "id": 1015
-        }
+        "dragLayout": {"type": "column", "numOfCol": 1, "label": "1 Column", "id": 1017}
       },
       {
         "0": {
           "type": "Text",
-          "label": "Footer Contact Info",
-          "textarea": "Your Company Name | 123 Business Street, Suite 100 | New York, NY 10001 | contact@company.com | (555) 123-4567",
-          "style": {"fontSize": "12px", "color": "#6c757d", "textAlign": "center", "padding": "30px 20px 10px", "lineHeight": "1.8"},
-          "outerStyle": {"width": "100%"},
-          "id": 1016
+          "label": "Footer Contact",
+          "textarea": "Your Company | 123 Business St | New York, NY 10001 | contact@company.com | (555) 123-4567",
+          "style": {"backgroundColor": "#fff", "color": "#6c757d", "padding": "30px 20px 10px", "textAlign": "center", "fontSize": "12px", "fontWeight": "normal"},
+          "outerStyle": {"backgroundColor": "#fff", "width": "100%"},
+          "id": 1018
         },
         "1": {
           "type": "Text",
           "label": "Footer Links",
-          "textarea": "Privacy Policy  |  Terms of Service  |  Unsubscribe",
-          "style": {"fontSize": "12px", "color": "#6c757d", "textAlign": "center", "padding": "10px 20px"},
-          "outerStyle": {"width": "100%"},
-          "id": 1017
+          "textarea": "Privacy Policy | Terms of Service | Unsubscribe",
+          "style": {"backgroundColor": "#fff", "color": "#6c757d", "padding": "10px 20px", "textAlign": "center", "fontSize": "12px", "fontWeight": "normal"},
+          "outerStyle": {"backgroundColor": "#fff", "width": "100%"},
+          "id": 1019
         },
         "2": {
           "type": "SocialIcons",
-          "label": "Social Media Icons",
-          "style": {"padding": "15px", "fontSize": "20px"},
-          "outerStyle": {"display": "flex", "justifyContent": "center", "alignItems": "center", "width": "100%", "gap": "15px"},
-          "id": 1018
+          "label": "Social Icons",
+          "socialIcons": [
+            {"icon": "https://cdn-icons-png.flaticon.com/128/2111/2111463.png", "url": "#"},
+            {"icon": "https://cdn-icons-png.flaticon.com/128/5968/5968852.png", "url": "#"},
+            {"icon": "https://cdn-icons-png.flaticon.com/128/5968/5968756.png", "url": "#"}
+          ],
+          "options": [
+            {"icon": "https://cdn-icons-png.flaticon.com/128/2111/2111463.png", "url": "#"},
+            {"icon": "https://cdn-icons-png.flaticon.com/128/5968/5968852.png", "url": "#"},
+            {"icon": "https://cdn-icons-png.flaticon.com/128/5968/5968756.png", "url": "#"}
+          ],
+          "style": {"width": 40, "height": 40},
+          "outerStyle": {"display": "flex", "gap": 15, "justifyContent": "center", "alignItems": "center", "width": "100%", "padding": "15px 0"},
+          "id": 1020
         },
         "3": {
           "type": "Text",
           "label": "Copyright",
           "textarea": "© 2024 Your Company. All rights reserved.",
-          "style": {"fontSize": "11px", "color": "#9ca3af", "textAlign": "center", "padding": "10px 20px 30px"},
-          "outerStyle": {"width": "100%"},
-          "id": 1019
+          "style": {"backgroundColor": "#fff", "color": "#9ca3af", "padding": "10px 20px 30px", "textAlign": "center", "fontSize": "11px", "fontWeight": "normal"},
+          "outerStyle": {"backgroundColor": "#fff", "width": "100%"},
+          "id": 1021
         },
-        "dragLayout": {
-          "type": "column",
-          "numOfCol": 1,
-          "label": "1 Column",
-          "id": 1020
-        }
+        "dragLayout": {"type": "column", "numOfCol": 1, "label": "1 Column", "id": 1022}
       }
     ]
 
-    CRITICAL RULES:
-    - Return ONLY valid JSON array with no markdown formatting
-    - NO explanations, comments, or extra text outside JSON
-    - Start ID numbers at 1001 and increment for each element
-    - Include ALL required sections (header, content with paragraphs, CTA, complete footer)
-    - Create templates with 8-15 column sections minimum
-    - Vary column layouts throughout the template
-    - Write complete, realistic email copy based on user's description
-    - Use List elements for features, benefits, or steps (3-5 items per list)
-    - List elements MUST have "items" array and "listStyle" ("bullet" or "number")
-    - List elements MUST include marginLeft: "20px" in style for proper indentation
-    - Footer must be 1 Column layout with 4+ stacked elements
-    - Always include proper contact info, links, social icons, and copyright in footer
-    - Use "textarea" property for Text elements (not "content")
-    - Use "content" property for Button elements (not "textarea")
-    - Use "items" array property for List elements
+    CRITICAL RULES - READ CAREFULLY:
+    1. Start IDs at 1001, increment by 1 for each element
+    2. ⚠️ MUST include exactly 2 List elements (in sections 5 and 7)
+    3. List property names: "listItems" (NOT "items"), "listType" (NOT "listStyle")
+    4. listType values: "unordered" or "ordered"
+    5. List MUST have "listStyle" object with display and marginBottom
+    6. Text elements: use "textarea" property
+    7. Button elements: use "content" property
+    8. Images: use Unsplash URLs (NOT /image.png)
+    9. Logo: use /logo.svg only for LogoHeader
+    10. Footer MUST have SocialIcons with both socialIcons and options arrays
+    11. Return ONLY JSON array - no markdown, no explanations
+    12. Follow the 9-section structure exactly as shown in example
+
+    CHECKLIST BEFORE GENERATING:
+    ✓ Section 5 has List element with "listItems" array
+    ✓ Section 7 has List element with "listItems" array  
+    ✓ Both Lists have "listType" property
+    ✓ Both Lists have "listStyle" object
+    ✓ Footer has SocialIcons with both arrays
+    ✓ All Images use Unsplash URLs
+    ✓ All IDs start at 1001 and increment
+
+    Now generate the template based on the user's request, following the exact structure above.
   `
 };

@@ -9,6 +9,7 @@ import DividerComponent from "../customComponents/ElementComponent/DividerCompon
 import LogoHeaderComponent from "../customComponents/ElementComponent/LogoHeaderComponent";
 import SocialComponent from "../customComponents/ElementComponent/SocialComponent";
 import { ArrowDown, ArrowUp, Trash2Icon, TrashIcon } from "lucide-react";
+import ListComponent from "../customComponents/ElementComponent/ListComponent";
 
 export const ColumnLayout = ({ layout }: any) => {
   const [dragOver, setDragOver] = useState<any>();
@@ -57,7 +58,9 @@ export const ColumnLayout = ({ layout }: any) => {
       case 'LogoHeader':
         return <LogoHeaderComponent  {...element}/>
       case 'SocialIcons':
-        return <SocialComponent  {...element}/>       
+        return <SocialComponent  {...element}/>  
+      case 'List':
+        return <ListComponent  {...element}/>       
 
     }
    

@@ -1,6 +1,6 @@
 
 
-import { Columns2, Facebook, Frame, Framer, Image, Link2, PanelTop, Projector, RectangleEllipsis, SquareSplitVertical, Text, TextSelectionIcon, Twitter } from "lucide-react";
+import { Columns2, Facebook, Frame, Framer, Image, Link2, List, PanelTop, Projector, RectangleEllipsis, SquareSplitVertical, Text, TextSelectionIcon, Twitter } from "lucide-react";
 
 
 export default [
@@ -46,6 +46,38 @@ export default [
         outerStyle: {
             backgroundColor: '#fff',
             width: '100%'
+        }
+    },
+
+     {
+        icon: List,
+        type: 'List',
+        label: 'List',
+        listItems: [
+            'List item 1',
+            'List item 2',
+            'List item 3'
+        ],
+        listType: 'unordered', // 'unordered' or 'ordered'
+        style: {
+            backgroundColor: '#fff',
+            color: '#000000',
+            padding: '10px',
+            fontSize: '16px',
+            lineHeight: '1.5',
+            margin: '0px',
+            listStyleType: `disc`,
+            listStylePosition: 'inside',
+            paddingLeft: '20px',
+        },
+        listStyle: {
+            display: 'list-item',
+            marginBottom: '8px'
+        },
+        outerStyle: {
+            backgroundColor: '#fff',
+            width: '100%',
+            padding: '10px'
         }
     },
     {

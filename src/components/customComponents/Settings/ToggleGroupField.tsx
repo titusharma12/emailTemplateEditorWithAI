@@ -17,7 +17,9 @@ const ToggleGroupField: React.FC<ToggleGroupFieldProps> = ({
   options = [],
   onHandleStyleChange
 }) => {
+  
   return (
+
     <div className="flex flex-col gap-2">
       <label className="font-medium">{label}</label>
 
