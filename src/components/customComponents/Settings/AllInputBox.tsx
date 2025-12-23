@@ -175,7 +175,7 @@ CRITICAL: Your entire response must be ONLY the JSON array. Start with [ and end
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    if ( e.key === 'Enter') {
       e.preventDefault();
       if (!isLoading && userInput.trim().length > 0) {
         OnGenerate();
